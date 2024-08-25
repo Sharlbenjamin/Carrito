@@ -1,0 +1,164 @@
+models:
+  Car:
+    user_id: id foreign
+    name: string:50 required
+    brand_id: id foreign nullable
+    type_id: id foreign nullable
+    year: year nullable
+    kilometers: integer nullable
+    license_date: date nullable
+    license: img nullable
+    l_r_t: integer nullable
+    relationships:
+      hasMany: Repair
+      BelongsTo: Brand, Type, User
+
+  Brand:
+    name: string:50 required
+    relationships:
+      hasMany: Type, Car
+
+  Type:
+    name: string:50 required
+    brand_id: id foreign required
+    relationships:
+      belongsTo: Brand
+
+  Repair:
+    car_id: id foreign required
+    agency_id: id foreign nullable
+    date: date nullable
+    invoice: integer nullable
+    relationships:
+      belongsTo: Car, Agency
+      hasMany: RepairPart
+
+  RepairPart:
+    part_id: id foreign
+    repair_id: id foreign
+    cost: integer nullable
+    relationships:
+      belongsTo: Part, Repair
+
+  Agency:
+    name: string:50 required
+    address: string:400 nullable
+    phone: integer nullable
+    relationships:
+      hasMany: Repair
+
+  Part:
+    name: string:100
+    duration: integer nullable
+    relationships:
+      hasMany: RepairPart
+
+controllers:
+  Car:
+    index:
+      query: where:user_id
+      render: car.index with:cars
+
+    create:
+      render: car.create with:types,brands
+
+    store:
+      validate: user_id, name, brand_id, type_id, year, kilometer, license_date, license, l_r_t
+      save: car
+      redirect: car.index
+
+    edit:
+      render: car.create with:types,brands,car
+
+    update:
+      validate: user_id, name, brand_id, type_id, year, kilometer, license_date, license, l_r_t
+      update: name, brand_id, type_id, year, kilometer, license_date, license, l_r_t
+      save: car
+      redirect: car.index
+
+    destroy:
+      delete: car
+      redirect: route:cars.index
+
+    show:
+      # find: car.id
+      # I think all:brands,types,repairs
+      render: car.show with:brand,types,repairs,car
+
+  Brand:
+    resource: create, store, edit, update, delete
+
+  Type:
+    resource: create, store, edit, update, delete
+
+  Part:
+    resource: create, store, edit, update, delete
+  
+  Repair:
+    create:
+      render: repair.create with:car.user,agency
+
+    store:
+      validate: agency_id, car_id, date, invoice
+      save: repair
+      redirect: repair.index
+    
+    destroy:
+      delete: repair
+      redirect: repair.index
+
+    edit:
+      render: repair.create with:car.user,agency,repair
+
+    update:
+      validate: agency_id, car_id, date, invoice
+      update: agency_id, car_id, date, invoice
+      save: repair
+      redirect: repair.index
+
+
+  RepairPart:
+    create:
+      render: repairpart.create with:repair
+
+    store:
+      validate: part_id, repair_id, cost
+      save: repairpart
+      redirect: repairpart.index
+
+    edit:
+      render: repairpart.create with:repair,repairpart
+
+    update:
+      validate: part_id, repair_id, cost
+      update: repairPart
+      redirect: repairpart.index
+
+    destroy:
+      delete: repairPart
+      redirect: repairpart.index
+
+  Agency:
+    index:
+      query: all
+      render: agency.index
+
+    create:
+      render: agency.create
+
+    store:
+      validate: name, address, phone
+      save: agency
+      redirect: agency.index
+
+    edit:
+      render: agency.create with:agency
+
+    update:
+      validate: name, address, phone
+      update: agency
+      redirect: agency.index
+
+    destroy:
+      delete: agency
+      redirect: agenct.index

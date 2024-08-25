@@ -1,0 +1,78 @@
+created:
+    - app/Http/Controllers/CarController.php
+    - app/Http/Controllers/BrandController.php
+    - app/Http/Controllers/TypeController.php
+    - app/Http/Controllers/PartController.php
+    - app/Http/Controllers/RepairController.php
+    - app/Http/Controllers/RepairPartController.php
+    - app/Http/Controllers/AgencyController.php
+    - database/factories/CarFactory.php
+    - database/factories/BrandFactory.php
+    - database/factories/TypeFactory.php
+    - database/factories/RepairFactory.php
+    - database/factories/RepairPartFactory.php
+    - database/factories/AgencyFactory.php
+    - database/factories/PartFactory.php
+    - database/migrations/2024_08_21_112714_create_cars_table.php
+    - database/migrations/2024_08_21_112715_create_brands_table.php
+    - database/migrations/2024_08_21_112716_create_types_table.php
+    - database/migrations/2024_08_21_112717_create_repairs_table.php
+    - database/migrations/2024_08_21_112718_create_repair_parts_table.php
+    - database/migrations/2024_08_21_112719_create_agencies_table.php
+    - database/migrations/2024_08_21_112720_create_parts_table.php
+    - app/Models/Car.php
+    - app/Models/Brand.php
+    - app/Models/Type.php
+    - app/Models/Repair.php
+    - app/Models/RepairPart.php
+    - app/Models/Agency.php
+    - app/Models/Part.php
+    - tests/Feature/Http/Controllers/CarControllerTest.php
+    - tests/Feature/Http/Controllers/BrandControllerTest.php
+    - tests/Feature/Http/Controllers/TypeControllerTest.php
+    - tests/Feature/Http/Controllers/PartControllerTest.php
+    - tests/Feature/Http/Controllers/RepairControllerTest.php
+    - tests/Feature/Http/Controllers/RepairPartControllerTest.php
+    - tests/Feature/Http/Controllers/AgencyControllerTest.php
+    - app/Http/Requests/CarStoreRequest.php
+    - app/Http/Requests/CarUpdateRequest.php
+    - app/Http/Requests/BrandStoreRequest.php
+    - app/Http/Requests/BrandUpdateRequest.php
+    - app/Http/Requests/TypeStoreRequest.php
+    - app/Http/Requests/TypeUpdateRequest.php
+    - app/Http/Requests/PartStoreRequest.php
+    - app/Http/Requests/PartUpdateRequest.php
+    - app/Http/Requests/RepairStoreRequest.php
+    - app/Http/Requests/RepairUpdateRequest.php
+    - app/Http/Requests/RepairPartStoreRequest.php
+    - app/Http/Requests/RepairPartUpdateRequest.php
+    - app/Http/Requests/AgencyStoreRequest.php
+    - app/Http/Requests/AgencyUpdateRequest.php
+    - resources/views/car/index.blade.php
+    - resources/views/car/create.blade.php
+    - resources/views/car/show.blade.php
+    - resources/views/brand/create.blade.php
+    - resources/views/brand/edit.blade.php
+    - resources/views/type/create.blade.php
+    - resources/views/type/edit.blade.php
+    - resources/views/part/create.blade.php
+    - resources/views/part/edit.blade.php
+    - resources/views/repair/create.blade.php
+    - resources/views/repairpart/create.blade.php
+    - resources/views/agency/index.blade.php
+    - resources/views/agency/create.blade.php
+updated:
+    - routes/web.php
+skipped:
+    - resources/views/car/create.blade.php
+    - resources/views/repair/create.blade.php
+    - resources/views/repairpart/create.blade.php
+    - resources/views/agency/create.blade.php
+models:
+    Car: { user_id: 'id foreign', name: 'string:50 required', brand_id: 'id foreign nullable', type_id: 'id foreign nullable', year: 'year nullable', kilometers: 'integer nullable', license_date: 'date nullable', license: 'img nullable', l_r_t: 'integer nullable', relationships: { hasMany: Repair, BelongsTo: 'Brand, Type, User' } }
+    Brand: { name: 'string:50 required', relationships: { hasMany: 'Type, Car' } }
+    Type: { name: 'string:50 required', brand_id: 'id foreign required', relationships: { belongsTo: Brand } }
+    Repair: { car_id: 'id foreign required', agency_id: 'id foreign nullable', date: 'date nullable', invoice: 'integer nullable', relationships: { belongsTo: 'Car, Agency', hasMany: RepairPart } }
+    RepairPart: { part_id: 'id foreign', repair_id: 'id foreign', cost: 'integer nullable', relationships: { belongsTo: 'Part, Repair' } }
+    Agency: { name: 'string:50 required', address: 'string:400 nullable', phone: 'integer nullable', relationships: { hasMany: Repair } }
+    Part: { name: 'string:100', duration: 'integer nullable', relationships: { hasMany: RepairPart } }
