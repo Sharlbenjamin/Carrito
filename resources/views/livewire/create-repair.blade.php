@@ -1,8 +1,12 @@
-<div class="">
+<div class="" x-data="{total:1}">
     <div class="mt-4">
         <x-label>Agency Name</x-label>
         <select wire:model.live="agency" class="w-full rounded-md border-gray-200 border-2">
+            @if (isset($repair->id))
+            <option value="{{$this->repair->agency->id}}">{{$this->repair->agency->name}}</option>
+            @else
             <option value="">Select Agency</option>
+            @endif
             @foreach($agencies as $agency)
             <option value="{{$agency->id}}">{{$agency->name}}</option>
             @endforeach
@@ -15,34 +19,17 @@
     <input type="hidden" wire:model.live="parts_number">
     <div class="mt-4 flex justify-center">
         <h2 class="text-xl font-bold">Maintenance Parts</h2>
-    </div>{{$parts_number}}
-    @for ($parts_number; $parts_number > 0; $parts_number--)
-    <div class="flex space-x-2">
-        <div class="mt-4 w-full">
-            <x-label>Patrt Name</x-label>
-            <select wire:model.live="CreateParts" class="w-full border-gray-200 border rounded-md border-2">
-                <option value="">Select Part</option>
-                @foreach ($parts as $item)
-                <option value="{{$item->id}}">{{$item->name}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mt-4 w-full">
-            <x-label>Part Cost</x-label>
-            <x-input wire:model.live="PartCost{{$parts_number}}" name="" value=""></x-input>
-        </div>
-        <div class="mt-10 justify-end flex">
-            <x-danger-button wire:click="RemovePart">Remove</x-danger-button>
-        </div>
     </div>
-    @endfor
+    @foreach($parts as $index => $part)
+        @livewire('add-part',['index' => $index, 'cost' => $part['cost'], 'part' => $part['part']], key($index))
+    @endforeach
     <div class="mt-4">
-        <x-button type="button" class="w-full justify-center" wire:click="AddPart">Add Part</x-button>
+        <x-button type="button" class="w-full justify-center" wire:click="addPart">Add Part</x-button>
     </div>
     <div class="mt-4 flex ">
         <h2 class="font-bold text-2xl">Total</h2>
         <div class="w-full mt-4"></div>
-        <h2 class="font-bold text-2xl ml-4">{{$invoice}}</h2>
+        <h2 class="font-bold text-2xl ml-4">{{$total}}</h2>
         <h2 class="font-bold text-2xl ml-1">LE</h2>
     </div>
     <div class="mt-2 flex justify-end">
@@ -52,7 +39,10 @@
         <x-submit-button type="button" wire:click="Submit">Submit</x-submit-button>
         <x-cancel-button type="button" wire:click="DeleteRepair">Cancel</x-cancel-button>
     </div>
-    
+    @if (isset($repair->id))
+        <x-cancel-button wire:click="RepairDelete">Delete</x-cancel-button>
+    @endif
+</div>
 </div>
 <!-- 
 On Clicking Add Maintenance 

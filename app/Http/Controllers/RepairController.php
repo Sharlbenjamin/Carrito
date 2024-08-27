@@ -40,7 +40,10 @@ class RepairController extends Controller
 
     public function edit(Request $request, Repair $repair): View
     {
-        return view('repair.create', compact('agency', 'repair'));
+        $agencies = Agency::all();
+        $car = $repair->car;
+
+        return view('repair.create', compact('car', 'agencies', 'repair'));
     }
 
     public function update(RepairUpdateRequest $request, Repair $repair): RedirectResponse

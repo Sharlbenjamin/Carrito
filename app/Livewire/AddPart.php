@@ -8,11 +8,18 @@ use App\Models\RepairPart;
 
 class AddPart extends Component
 {
-    public $CreateParts;
-    public $cost;
-    public $parts_number;
+    public $cost = 0;
+    public $part;
+    public $index;
 
     protected $listeners = ['RepairAdded' => 'Create'];
+
+    public function mount($cost = 0, $part, $index)
+        {
+            $this->cost = $cost;	
+            $this->part = $part;	
+            $this->index = $index;	
+        }
 
     public function render()
     {
@@ -22,22 +29,28 @@ class AddPart extends Component
     }
 
     public function updated()
-        {
-                $costs = $this->cost;
-            return $this->dispatch('CostUpdated', $costs);
-        }
+    {
+        return $this->dispatch('CostUpdated', $this->cost, $this->index);
+    }
 
     public function Create($repair)
     {
-        return RepairPart::create([
+        $part = RepairPart::create([
             'repair_id' => $repair['id'],
-            'part_id' => $this->CreateParts,
+            'part_id' => $this->part,
             'cost' => $this->cost
         ]);
+
+        $invoice = RepairPart::where('repair_id', $part->repair->id)->sum('cost');
+
+        $part->repair->update([
+            'invoice' => $invoice
+        ]);
+        $part->repair->save();
     }
 
     public function RemovePart()
-        {
-            return ;	
-        }
+    {
+        return dd($this->cost, $this->parts_number);
+    }
 }
