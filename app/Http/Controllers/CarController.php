@@ -8,7 +8,7 @@ use App\Http\Requests\CarUpdateRequest;
 use App\Models\Car;
 use App\Models\Brand;
 use App\Models\Type;
-use App\Models\Repair;
+use App\Models\Part;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -74,10 +74,11 @@ class CarController extends Controller
     {
         $brands = Brand::all();
         $types = Type::all();
+        $parts = Part::all();
 
         // $repairs = Repair::where('car_id', $car->id)->get();
 
 
-        return view('car.show', compact('brands', 'types', 'car'));
+        return view('car.show', compact('brands', 'types', 'car', 'parts'));
     }
 }

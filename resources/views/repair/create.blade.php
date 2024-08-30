@@ -5,7 +5,7 @@
     <div class="grid grid-cols-6">
         <div class="col-span-1"></div>
         <div class="col-span-4 p-4 border rounded-md">
-            @if (isset($repair))
+            @if (isset($repair->id))
             @livewire('create-repair', ['car' => $car, 'repair' => $repair])
             @else
             @livewire('create-repair', ['car' => $car])

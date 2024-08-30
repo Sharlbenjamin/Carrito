@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Repair extends Model
@@ -49,4 +50,9 @@ class Repair extends Model
     {
         return $this->hasMany(RepairPart::class);
     }
+
+    public function parts(): BelongsToMany
+        {
+            return $this->belongsToMany(Part::class, RepairPart::class);
+        }
 }

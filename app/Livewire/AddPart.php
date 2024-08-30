@@ -5,21 +5,29 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Part;
 use App\Models\RepairPart;
+use App\Models\Repair;
 
 class AddPart extends Component
 {
     public $cost = 0;
     public $part;
+    public $selectedPart;
     public $index;
 
-    protected $listeners = ['RepairAdded' => 'Create'];
+    protected $listeners = [
+        'RepairAdded' => 'Create',
+        'RepairUpdated' => 'SyncParts', 
+        'RemoveItem' => 'updated'
+    ];
+
+    // Synch Created and not Crated
 
     public function mount($cost = 0, $part, $index)
-        {
-            $this->cost = $cost;	
-            $this->part = $part;	
-            $this->index = $index;	
-        }
+    {
+        $this->cost = $cost;
+        $this->part = $part;
+        $this->index = $index;
+    }
 
     public function render()
     {
@@ -30,7 +38,10 @@ class AddPart extends Component
 
     public function updated()
     {
-        return $this->dispatch('CostUpdated', $this->cost, $this->index);
+        if($this->cost == ''){
+            return $this->dispatch('CostUpdated', 0, $this->index);
+        }
+            return $this->dispatch('CostUpdated', $this->cost, $this->index);
     }
 
     public function Create($repair)
@@ -49,8 +60,8 @@ class AddPart extends Component
         $part->repair->save();
     }
 
-    public function RemovePart()
+    public function RemovePart($index)
     {
-        return dd($this->cost, $this->parts_number);
+        return $this->dispatch('RemovePart', $index);
     }
 }

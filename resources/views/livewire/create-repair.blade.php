@@ -14,7 +14,7 @@
     </div>
     <div class="mt-4">
         <x-label>Maintenance Date</x-label>
-        <input type="date" wire:model.live="date" class="w-full rounded-md border-gray-200 border-2">
+        <input type="date" wire:model.live="date" class="w-full rounded-md border-gray-200 border-2" value="{{$date}}">
     </div>
     <input type="hidden" wire:model.live="parts_number">
     <div class="mt-4 flex justify-center">
@@ -36,24 +36,15 @@
         <div class="w-full border-t border-gray-300"></div>
     </div>
     <div class="mt-4 flex justify-end space-x-2">
+        @if (isset($repair->id))
+        <x-submit-button type="button" wire:click="Update">Update</x-submit-button>
+        @else
         <x-submit-button type="button" wire:click="Submit">Submit</x-submit-button>
+        @endif
         <x-cancel-button type="button" wire:click="DeleteRepair">Cancel</x-cancel-button>
     </div>
     @if (isset($repair->id))
         <x-cancel-button wire:click="RepairDelete">Delete</x-cancel-button>
     @endif
+    </div>
 </div>
-</div>
-<!-- 
-On Clicking Add Maintenance 
-1. Create Maintenence with Agency and date either null or not.
-2. Pass the Repair/ Maintenance id.
-3. create an array of parts.
-
-on Clicking add Part
-1. Append to the Parts array another part.
-
-On Clicking x-cancel-button
-1. Delete The Fake Maintenence created.
-2. route to show  -->
-
