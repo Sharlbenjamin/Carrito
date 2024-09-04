@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 
 class Car extends Model
 {
@@ -59,5 +60,27 @@ class Car extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function hasPartsNeedRepairing()
+    {
+        $parts = Part::all();
+        $now = Carbon::now();
+        $nowDate = strtotime(Carbon::now());
+        $h_p_n_r = 'false';
+        
+        foreach ($parts as $part) {
+            if($part->nrd($this->id) == 'NA'){
+                $partDate = strtotime(Carbon::now()->addDay(1));
+            }else{
+                $partDate = strtotime($part->nrd($this->id));
+            }
+            if ($partDate < $nowDate) {
+                $h_p_n_r = 'true';
+            }else{
+                $h_p_n_r;
+            }
+        }
+       return $h_p_n_r;
     }
 }

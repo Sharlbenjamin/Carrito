@@ -21,7 +21,7 @@
         <h2 class="text-xl font-bold">Maintenance Parts</h2>
     </div>
     @foreach($parts as $index => $part)
-        @livewire('add-part',['index' => $index, 'cost' => $part['cost'], 'part' => $part['part']], key($index))
+        @livewire('add-part',['index' => $index, 'id' => $part['id'], 'cost' => $part['cost'], 'part' => $part['part']], key($index))
     @endforeach
     <div class="mt-4">
         <x-button type="button" class="w-full justify-center" wire:click="addPart">Add Part</x-button>

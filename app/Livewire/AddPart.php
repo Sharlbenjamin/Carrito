@@ -13,6 +13,7 @@ class AddPart extends Component
     public $part;
     public $selectedPart;
     public $index;
+    public $id;
 
     protected $listeners = [
         'RepairAdded' => 'Create',
@@ -22,8 +23,9 @@ class AddPart extends Component
 
     // Synch Created and not Crated
 
-    public function mount($cost = 0, $part, $index)
+    public function mount($cost = 0, $part, $index, $id)
     {
+        $this->id = $id;
         $this->cost = $cost;
         $this->part = $part;
         $this->index = $index;
@@ -60,8 +62,8 @@ class AddPart extends Component
         $part->repair->save();
     }
 
-    public function RemovePart($index)
+    public function RemovePart()
     {
-        return $this->dispatch('RemovePart', $index);
+        return $this->dispatch('RemovePart', $this->id);
     }
 }

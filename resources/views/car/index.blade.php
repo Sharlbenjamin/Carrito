@@ -3,7 +3,7 @@
         Cars
     </x-slot>
     <div class="grid grid-cols-12">
-        <div class="col-span-6">
+        <div class="col-span-12">
             <x-table subject="Your Cars" description="List of all of your Cars" button="New Car" route="{{route('cars.create')}}">
                 <x-slot name="tableHeader">
                     <x-table-bold-header>Name</x-table-bold-header>

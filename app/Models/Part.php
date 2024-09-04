@@ -44,14 +44,44 @@ class Part extends Model
 
     public function lrd($car)
     {
-        $date = $this->repairs->where('car_id', $car)->sortByDesc('date')->first()->date;
+        $date = $this->repairs->where('car_id', $car)->sortByDesc('date')->first();
+        if (isset($date)) {
+            $date  = $date->date;
         return Carbon::parse($date)->format('d-m-Y');
+        }else{
+            return 'NA';
+        }
     }
 
     public function nrd($car)
     {
-        $date = $this->repairs->where('car_id', $car)->sortByDesc('date')->first()->date;
+        $date = $this->repairs->where('car_id', $car)->sortByDesc('date')->first();
+        if (isset($date)) {
+            $date  = $date->date;
+            return Carbon::parse($date)->addDay($this->duration)->format('d-m-Y');
+        } else {
+            return 'NA';
+        }
+    }
 
-        return Carbon::parse($date)->addDay($this->duration)->format('d-m-Y');
+    public function needsRepairing($car)
+    {
+        $now = Carbon::now();
+        $nowDate = strtotime(Carbon::now());
+        $h_p_n_r = false;
+
+        if($this->nrd($car->id) == 'NA'){
+            $partDate = strtotime(Carbon::now()->addDAy(1));
+        }else{
+            $partDate = strtotime($this->nrd($car->id));
+        }
+        
+            if ($partDate < $nowDate) {
+                $h_p_n_r = true;
+            }else{
+                $h_p_n_r;
+            }
+
+       return $h_p_n_r;
     }
 }

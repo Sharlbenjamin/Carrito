@@ -1,0 +1,56 @@
+models:
+  Account:
+    user_id: id foreign
+    website: string:100 required
+    username: string:50 required
+    email: string:50 nullable
+    password: string:50 nullable
+    relationships:
+      hasMany: Application
+  
+  Application:
+    user_id: id foreign
+    account_id: id foreign
+    company: string:50 nullable
+    date: date nullable
+    job_title: string nullable
+    status: enum:Preparing,Applied,Interviewing,Accepted nullable
+    expected_reply_date: date nullable
+    priority: enum:Low,Medium,High nullable
+    salary: integer nullable
+    relationships:
+      belongsTo: Account
+
+  Course:
+    user_id: id foreign
+    subject: id foreign
+    name: string:100 required
+    level: enum:Easy,Medium,Difficult,Very Difficult nullable
+    chapters: integer nullable
+    length: integer nullable
+    progress: integer nullable
+    relationships:
+      belongsTo: Subject
+
+    Resume:
+      user_id: id foreign
+      title: string:50 required
+      
+  
+  Subject:
+    name: string:50 required
+    realtionships:
+      hasMany: course
+
+controllers:
+  Account:
+    resource: show, create, store, edit, update, delete
+
+  Application:
+    resource: show, create, store, edit, update, delete
+
+  Course:
+    resource: show, create, store, edit, update, delete
+
+  Subject:
+    resource: create, store, edit, update, delete

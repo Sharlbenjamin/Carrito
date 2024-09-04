@@ -48,17 +48,26 @@ class CreateRepair extends Component
     public function addPart($part = NULL, $cost = NULL)
     {
         $this->parts[] = [
-            'part' => $part, // fix it
+            'id' => uniqid(),
+            'part' => $part, 
             'cost' => $cost
         ];
     }
 
-    public function RemoveItem($index)
+    public function RemoveItem($id)
     {
-        unset($this->parts[$index]);
-        $this->parts = array_values($this->parts);
+        // unset($this->parts[$index]);
+        // $this->parts = array_values($this->parts);
+        // $this->calculateTotal();
+
+        $this->parts = array_filter($this->parts, function($item) use ($id) {
+            return $item['id'] !== $id;
+        });
+
+        // $this->parts = array_filter($this->parts, function ($item) use ($id) {
+        //     return $item['id'] !== $id;
+        // });
         $this->calculateTotal();
-        return;
     }
 
     public function CalculateInvoice($cost, $index)
