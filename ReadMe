@@ -1,0 +1,17 @@
+Carrito is a data management platform showcasing the ability to handle a many-to-many relationship. Users can input, calculate, and submit data before saving it to the database, ensuring a smooth and accurate workflow.
+
+Features:
+
+Submit and save data with many-to-many relationships.
+Dynamic calculations before final submission.
+Efficient management of linked records.
+Technologies:
+
+Backend: PHP, Laravel, Livewire
+Frontend: Tailwind CSS, Alpine.js
+Setup Instructions:
+
+Clone the repository: git clone [repository URL]
+Install dependencies: composer install && npm install
+Run migrations: php artisan migrate
+Serve the application: php artisan serve
